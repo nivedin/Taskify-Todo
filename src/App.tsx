@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import "./App.scss";
 import InputFeild from "./components/InputFeild";
@@ -10,10 +10,28 @@ const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [completedTodos, setCompletedTodos] = useState<Todo[]>([]);
 
+  useEffect(() => {
+    setTodos(JSON.parse(window.localStorage.getItem("todos") || "[]"));
+    setCompletedTodos(
+      JSON.parse(window.localStorage.getItem("completed") || "[]")
+    );
+  }, []);
+
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (todo) {
+      const newTodo: Todo = {
+        id: Date.now(),
+        todo: todo,
+        isDone: false,
+      } as Todo;
+
+      const updatedTodos = [...todos, newTodo];
+
+      window.localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
       setTodos([...todos, { id: Date.now(), todo, isDone: false }]);
+
       setTodo("");
     }
   };
@@ -46,7 +64,8 @@ const App: React.FC = () => {
     } else {
       complete.splice(destination.index, 0, add);
     }
-
+    window.localStorage.setItem("todos", JSON.stringify(active));
+    window.localStorage.setItem("completed", JSON.stringify(complete));
     setCompletedTodos(complete);
     setTodos(active);
   };

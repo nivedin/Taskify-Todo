@@ -16,16 +16,19 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos, index }) => {
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
 
   const handleDone = (id: number) => {
-    !edit &&
-      setTodos(
-        todos.map((todo) =>
-          todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
-        )
-      );
+    const updateTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
+    );
+
+    !edit && localStorage.setItem("todos", JSON.stringify(updateTodos));
+    !edit && setTodos(updateTodos);
   };
 
   const handleDelete = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    localStorage.setItem("completed", JSON.stringify(updatedTodos));
+    setTodos(updatedTodos);
   };
 
   const handleEdit = (id: number) => {
@@ -36,9 +39,12 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos, index }) => {
 
   const handleEditTodo = (e: React.FormEvent, id: number) => {
     e.preventDefault();
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, todo: editTodo } : todo))
+    const updateTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, todo: editTodo } : todo
     );
+    localStorage.setItem("todos", JSON.stringify(todos));
+
+    setTodos(updateTodos);
     setEdit(false);
   };
 
