@@ -42,7 +42,7 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos, index }) => {
     const updateTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, todo: editTodo } : todo
     );
-    localStorage.setItem("todos", JSON.stringify(todos));
+    localStorage.setItem("todos", JSON.stringify(updateTodos));
 
     setTodos(updateTodos);
     setEdit(false);
