@@ -43,6 +43,7 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos, index }) => {
       todo.id === id ? { ...todo, todo: editTodo } : todo
     );
     localStorage.setItem("todos", JSON.stringify(updateTodos));
+    localStorage.setItem("completed", JSON.stringify(updateTodos));
 
     setTodos(updateTodos);
     setEdit(false);
