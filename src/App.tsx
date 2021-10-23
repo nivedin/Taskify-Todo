@@ -24,13 +24,17 @@ const App: React.FC = () => {
         id: Date.now(),
         todo: todo,
         isDone: false,
+        isComplete: false,
       } as Todo;
 
       const updatedTodos = [...todos, newTodo];
 
       window.localStorage.setItem("todos", JSON.stringify(updatedTodos));
 
-      setTodos([...todos, { id: Date.now(), todo, isDone: false }]);
+      setTodos([
+        ...todos,
+        { id: Date.now(), todo, isDone: false, isComplete: false },
+      ]);
 
       setTodo("");
     }
@@ -53,9 +57,11 @@ const App: React.FC = () => {
 
     if (source.droppableId === "TodosList") {
       add = active[source.index];
+      add.isComplete = true;
       active.splice(source.index, 1);
     } else {
       add = complete[source.index];
+      add.isComplete = false;
       complete.splice(source.index, 1);
     }
 
